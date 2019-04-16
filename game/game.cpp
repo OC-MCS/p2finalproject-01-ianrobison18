@@ -5,38 +5,28 @@
 // project (moving the little green ship). 
 //========================================================
 #include <iostream>
+#include <list>
+#include "Slav.h"
+#include "Bottles.h"
+#include "WesternSpies.h"
+#include "MooCows.h"
+#include "Boris.h"
+#include "Level.h"
+#include "BossLevel.h"
 using namespace std;
 #include <SFML/Graphics.hpp>
-using namespace sf; 
+#include <SFML/Audio.hpp>
+using namespace sf;
+
 
 //============================================================
-// YOUR HEADER WITH YOUR NAME GOES HERE. PLEASE DO NOT FORGET THIS
+// Ian Robison
+// Programming II
+// Space Shooter Game
 //============================================================
 
-// note: a Sprite represents an image on screen. A sprite knows and remembers its own position
-// ship.move(offsetX, offsetY) adds offsetX, offsetY to 
-// the current position of the ship. 
-// x is horizontal, y is vertical. 
-// 0,0 is in the UPPER LEFT of the screen, y increases DOWN the screen
-void moveShip(Sprite& ship)
-{
-	const float DISTANCE = 5.0;
-
-	if (Keyboard::isKeyPressed(Keyboard::Left))
-	{
-		// left arrow is pressed: move our ship left 5 pixels
-		// 2nd parm is y direction. We don't want to move up/down, so it's zero.
-		ship.move(-DISTANCE, 0);
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Right))
-	{
-		// right arrow is pressed: move our ship right 5 pixels
-		ship.move(DISTANCE, 0);
-	}
-}
-
-
-
+bool checkFrames(int &frames, bool canFire);
+void checkEnemyFrames(Level currentLevel, int &frames);
 int main()
 {
 	const int WINDOW_WIDTH = 800;
@@ -48,87 +38,166 @@ int main()
 
 	// load textures from file into memory. This doesn't display anything yet.
 	// Notice we do this *before* going into animation loop.
-	Texture shipTexture;
-	if (!shipTexture.loadFromFile("ship.png"))
-	{
-		cout << "Unable to load ship texture!" << endl;
-		exit(EXIT_FAILURE);
-	}
+	
 	Texture starsTexture;
-	if (!starsTexture.loadFromFile("stars.jpg"))
+	if (!starsTexture.loadFromFile("StPetersburg.png"))
 	{
 		cout << "Unable to load stars texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
+	Texture slavTexture;
+	if (!slavTexture.loadFromFile("Slav.png"))
+	{
+		cout << "Unable to load slav texture!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	Texture bottleTexture;
+	if (!bottleTexture.loadFromFile("Bottle.png"))
+	{
+		cout << "Unable to load bottle texture!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	Texture westernSpyTexture;
+	if (!westernSpyTexture.loadFromFile("enemy.png"))
+	{
+		cout << "Unable to load spy texture!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	Texture enemySlavTexture;
+	if (!enemySlavTexture.loadFromFile("enemySlav.png"))
+	{
+		cout << "Unable to load enemy Slav texture!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	Texture borisTexture;
+	if (!borisTexture.loadFromFile("SlavKing.png"))
+	{
+		cout << "Unable to load Slav King texture!" << endl;
+		exit(EXIT_FAILURE);
+	}
 
+	Level levelOne(westernSpyTexture, 60, 0.3);
+	Level levelTwo(enemySlavTexture, 40, 0.45);
+	BossLevel slavKingFight(borisTexture, 15);
 	// A sprite is a thing we can draw and manipulate on the screen.
 	// We have to give it a "texture" to specify what it looks like
 
 	Sprite background;
 	background.setTexture(starsTexture);
-	// The texture file is 640x480, so scale it up a little to cover 800x600 window
-	background.setScale(1.5, 1.5);
+	levelOne.setBackground(background);
+	levelTwo.setBackground(background);
+	slavKingFight.setBackground(background);
 
-	// create sprite and texture it
-	Sprite ship;
-	ship.setTexture(shipTexture);
+	// Slav sprite data
+	Sprite slavic;
+	slavic.setTexture(slavTexture);
+	float slavX = 300;
+	float slavY = 500;
+	slavic.setPosition(slavX, slavY);
+	Slav slav(slavic);
+	levelOne.setPlayer(slav);
+	levelTwo.setPlayer(slav);
+	slavKingFight.setPlayer(slav);
 
+	// Bottle data
+	Bottles bottles(bottleTexture);
+	levelOne.setPlayerWeapon(bottles);
+	levelTwo.setPlayerWeapon(bottles);
+	slavKingFight.setPlayerWeapon(bottles);
 
-	// initial position of the ship will be approx middle of screen
-	float shipX = window.getSize().x / 2.0f;
-	float shipY = window.getSize().y / 2.0f;
-	ship.setPosition(shipX, shipY);
+	Music gameMusic;
+	if (!gameMusic.openFromFile("gameMusic.ogg"))
+	{
+		cout << "Unable to load in game music!" << endl;
+		exit(EXIT_FAILURE);
+	}
 
+	SoundBuffer cheekiBuffer;
+	if (!cheekiBuffer.loadFromFile("cheekiBreeki.ogg"))
+	{
+		cout << "unable to load cheeki breeki!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	Sound cheekiBreeki;
+	cheekiBreeki.setBuffer(cheekiBuffer);
+	cheekiBreeki.setVolume(100.f);
+	bool playCheekiBreeki = true;
+	gameMusic.setVolume(40.f);
+	gameMusic.play();
+	gameMusic.setLoop(true);
 
+	int frames = 0;
+	int enemyFrames = 0;
+	int level = 1;
+	bool canFire = true,
+		levelComplete = false;
+	
 	while (window.isOpen())
 	{
-		// check all the window's events that were triggered since the last iteration of the loop
-		// For now, we just need this so we can click on the window and close it
-		Event event;
-
-		while (window.pollEvent(event))
+		canFire = checkFrames(frames, canFire);
+		checkEnemyFrames(levelOne, enemyFrames);
+		if (level == 1)
 		{
-			// "close requested" event: we close the window
-			if (event.type == Event::Closed)
-				window.close();
-			else if (event.type == Event::KeyPressed)
+			levelComplete = levelOne.playLevel(window, canFire, enemyFrames);
+			if (levelComplete)
 			{
-				if (event.key.code == Keyboard::Space)
-				{
-					// handle space bar
-				}
-				
+				level++;
+				levelComplete = false;
 			}
 		}
-
-		//===========================================================
-		// Everything from here to the end of the loop is where you put your
-		// code to produce ONE frame of the animation. The next iteration of the loop will
-		// render the next frame, and so on. All this happens ~ 60 times/second.
-		//===========================================================
-
-		// draw background first, so everything that's drawn later 
-		// will appear on top of background
-		window.draw(background);
-
-		moveShip(ship);
-
-		// draw the ship on top of background 
-		// (the ship from previous frame was erased when we drew background)
-		window.draw(ship);
-
-
-		// end the current frame; this makes everything that we have 
-		// already "drawn" actually show up on the screen
-		window.display();
-
+		else if (level == 2)
+		{
+			levelComplete = levelTwo.playLevel(window, canFire, enemyFrames);
+			if (levelComplete)
+			{
+				level++;
+				levelComplete = false;
+			}
+		}
+		else if (level == 3)
+		{
+			while (playCheekiBreeki)
+			{
+				cheekiBreeki.play();
+				playCheekiBreeki = false;
+			}
+			levelComplete = slavKingFight.playLevel(window, canFire, enemyFrames);
+			if (levelComplete)
+			{
+				level++;
+				levelComplete = false;
+			}
+		}
 		// At this point the frame we have built is now visible on screen.
 		// Now control will go back to the top of the animation loop
 		// to build the next frame. Since we begin by drawing the
 		// background, each frame is rebuilt from scratch.
 
-	} // end body of animation loop
+ 	} // end body of animation loop
 
 	return 0;
 }
 
+bool checkFrames(int &frames, bool canFire)
+{
+	frames++;
+	if (frames == 60)
+	{
+		frames = 0;
+	}
+	if (frames % 15 == 0)
+	{
+		canFire = true;
+	}
+
+	return canFire;
+}
+
+void checkEnemyFrames(Level currentLevel, int &frames)
+{
+	frames++;
+	if (frames == currentLevel.getEnemyFrames())
+	{
+		frames = 0;
+	}
+}

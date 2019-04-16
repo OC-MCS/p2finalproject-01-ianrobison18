@@ -146,10 +146,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boris.cpp" />
+    <ClCompile Include="BossLevel.cpp" />
+    <ClCompile Include="Bottle.cpp" />
+    <ClCompile Include="Bottles.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="MooCow.cpp" />
+    <ClCompile Include="MooCows.cpp" />
+    <ClCompile Include="Slav.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="WesternSpies.cpp" />
+    <ClCompile Include="WesternSpy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Boris.h" />
+    <ClInclude Include="BossLevel.h" />
+    <ClInclude Include="Bottle.h" />
+    <ClInclude Include="Bottles.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="MooCow.h" />
+    <ClInclude Include="MooCows.h" />
+    <ClInclude Include="Slav.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="WesternSpies.h" />
+    <ClInclude Include="WesternSpy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
