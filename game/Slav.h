@@ -14,6 +14,9 @@ public:
 	Slav();
 	Slav(Sprite &slav);
 	FloatRect getGlobalBounds();
+	void setLives(int lives);
+	int getLives();
+	void loseLives();
 	Sprite getSlav();
 	void move();
 	void checkBounds(MooCows &cows);

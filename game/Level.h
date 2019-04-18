@@ -19,12 +19,17 @@ private:
 	WesternSpies enemies;
 	Texture enemyTexture;
 	MooCows enemyWeapon;
-	int level, enemyFrames;
+	int level, enemyFrames, score;
 	float speed;
 public:
+	Level();
 	Level(Texture &enemyTexture, int enemyFrames, float speed);
+	void restartLevel(Texture &enemyTexture);
 	void renderLevel(RenderWindow &win, Sprite backGround);
 	void setBackground(Sprite background);
+	void setScore(int score);
+	int getScore();
+	void setUI(UI ui);
 	Slav getPlayer();
 	void setPlayer(Slav s);
 	Bottles getPlayerWeapon();
@@ -34,5 +39,6 @@ public:
 	void setEnemyWeapon(MooCows m);
 	int getEnemyFrames();
 
-	bool playLevel(RenderWindow &win, bool canFire, int frames);
+	bool playLevel(RenderWindow &win, bool canFire, int frames, 
+		bool &paused, bool &onMenu, bool &levelStart, bool &fail);
 };

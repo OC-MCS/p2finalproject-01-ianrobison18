@@ -20,7 +20,7 @@ Boris::Boris(Texture &bossTexture)
 {
 	boris.setPosition(150, 100);
 	boris.setTexture(bossTexture);
-	health = 15;
+	health = 25;
 	direction = false;
 }
 
@@ -37,6 +37,11 @@ Sprite Boris::getSprite()
 int Boris::getHealth()
 {
 	return health;
+}
+
+void Boris::setDeepFried(Texture &deepFried)
+{
+	boris.setTexture(deepFried);
 }
 
 void Boris::setFrames(int frames)
@@ -73,37 +78,36 @@ void Boris::drawBoris(RenderWindow &win)
 	win.draw(boris);
 }
 
-MooCows Boris::throwMooCows(int frames)
+void Boris::throwMooCows(int frames, MooCows &trueDeath)
 {
 	if (frames == 0)
 	{
-		trueDeath.addMooCow(boris.getPosition());
+ 		trueDeath.addMooCow(boris.getPosition());
 	}
 	if (!trueDeath.getMooCows().empty())
 	{
 		trueDeath.updatePos();
 	}
-
-	return trueDeath;
 }
 
-void Boris::checkBounds(Bottles &bottles)
+bool Boris::checkBounds(Bottles &bottles)
 {
-	list<Bottle*>::iterator iterBottle = bottles.getBottles().begin();
-	list<Bottle*>::iterator bottleEnd = bottles.getBottles().end();
+	list<Bottle>::iterator iterBottle = bottles.getBottles().begin();
+	list<Bottle>::iterator bottleEnd = bottles.getBottles().end();
 	FloatRect bottleBounds, enemyBounds;
-
+	bool hit = false;
 	if (!bottles.getBottles().empty())
 	{
-		for (iterBottle; iterBottle != bottleEnd; )
+		for (iterBottle; iterBottle != bottleEnd && !hit; )
 		{
 			enemyBounds = getGlobalBounds();
-			bottleBounds = (*iterBottle)->getGlobalBounds();
+			bottleBounds = iterBottle->getGlobalBounds();
 			
 			if (bottleBounds.intersects(enemyBounds))
 			{
 				iterBottle = bottles.getBottles().erase(iterBottle);
 				health--;
+				hit = true;
 			}
 			else
 			{
@@ -111,4 +115,5 @@ void Boris::checkBounds(Bottles &bottles)
 			}
 		}
 	}
+	return hit;
 }

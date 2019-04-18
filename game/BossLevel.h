@@ -17,13 +17,18 @@ private:
 	Slav player;
 	Bottles playerWeapon;
 	Boris boss;
-	Texture enemyTexture;
+	Texture enemyTexture,
+		deepFriedTexture;
 	MooCows enemyWeapon;
-	int bossFrames;
+	int bossFrames, score;
 public:
-	BossLevel(Texture &bossTexture, int bossFrames);
+	BossLevel(Texture &bossTexture, Texture &secondTexture, int bossFrames);
+	void restartLevel(Texture &bossTexture, Texture &secondTexture);
 	void renderLevel(RenderWindow &win, Sprite backGround);
 	void setBackground(Sprite background);
+	void setScore(int score);
+	int getScore();
+	void setUI(UI ui);
 	Slav getPlayer();
 	void setPlayer(Slav s);
 	Bottles getPlayerWeapon();
@@ -33,5 +38,6 @@ public:
 	void setEnemyWeapon(MooCows m);
 	int getEnemyFrames();
 
-	bool playLevel(RenderWindow &win, bool canFire, int frames);
+	bool playLevel(RenderWindow &win, bool canFire, int frames, 
+		bool &paused, bool &onMenu, bool &levelStart, bool &fail);
 };

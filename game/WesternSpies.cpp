@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 #include "WesternSpies.h"
+#include "Slav.h"
 using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
@@ -17,28 +18,26 @@ WesternSpies::WesternSpies(Texture &spyTexture)
 	newSpy.setPosition(150, 50);
 	newSpy.setTexture(spyTexture);
 	WesternSpy spy(newSpy);
-	WesternSpy *spyPtr = &spy;
-	Vector2f pos = spyPtr->getSpy().getPosition();
-	Sprite tempSpy = spyPtr->getSpy();
+	Vector2f pos = spy.getSpy().getPosition();
+	Sprite tempSpy = spy.getSpy();
 	numSpies = 10;
 
 	for (int i = 1; i <= 2; i++)
 	{
 		for (int j = 1; j <= 5; j++)
 		{
-			spyPtr = new WesternSpy(tempSpy);
-			spies.push_back(spyPtr);
+			spies.push_back(spy);
 			pos.x += 75;
-			tempSpy = spyPtr->getSpy();
+			tempSpy = spy.getSpy();
 			tempSpy.setPosition(pos);
-			spyPtr->setSpy(tempSpy);
+			spy.setSpy(tempSpy);
 		}
 		pos.y += 75;
 		pos.x = 150;
 	}
 }
 
-list<WesternSpy*> WesternSpies::getSpies()
+list<WesternSpy> &WesternSpies::getSpies()
 {
 	return spies;
 }
@@ -53,17 +52,18 @@ void WesternSpies::setMovement(float movement)
 	movementSpeed = movement;
 }
 
-void WesternSpies::updatePos(float speed)
+void WesternSpies::updatePos(float speed, Slav &player)
 {
-	list<WesternSpy*>::iterator iter;
+	list<WesternSpy>::iterator iter;
 
 	for (iter = spies.begin(); iter != spies.end(); )
 	{
-		(*iter)->setSpeed(speed);
-		(*iter)->updatePosition(speed);
-		Vector2f pos = (*iter)->getSpy().getPosition();
+		iter->setSpeed(speed);
+		iter->updatePosition(speed);
+		Vector2f pos = iter->getSpy().getPosition();
 		if (pos.y <= -40)
 		{
+			player.loseLives();
 		}
 		else
 			iter++;
@@ -77,22 +77,20 @@ int WesternSpies::getNumSpies()
 
 void WesternSpies::drawWesternSpies(RenderWindow &win)
 {
-	list<WesternSpy*>::iterator iter;
-	list<MooCow*>::iterator cowIter;
+	list<WesternSpy>::iterator iter;
 
 	for (iter = spies.begin(); iter != spies.end(); iter++)
 	{
-		win.draw((*iter)->getSpy());
+		win.draw(iter->getSpy());
 	}
-	mutuallyAssuredDeath.drawMooCows(win);
 }
 
-MooCows WesternSpies::throwMooCows(int frames)
+void WesternSpies::throwMooCows(int frames, MooCows &mutuallyAssuredDeath)
 {
 	if (frames == 0)
 	{
 		int randomSpy = rand() % numSpies + 1;
-		list<WesternSpy*>::iterator iter = spies.begin();
+		list<WesternSpy>::iterator iter = spies.begin();
 		
 		for (int i = 1; i < randomSpy; i++)
 		{
@@ -100,43 +98,47 @@ MooCows WesternSpies::throwMooCows(int frames)
 		}
 
 		
-		mutuallyAssuredDeath.addMooCow((*iter)->getSpy().getPosition());
+		mutuallyAssuredDeath.addMooCow(iter->getSpy().getPosition());
 	}
 	if (!mutuallyAssuredDeath.getMooCows().empty())
 	{
 		mutuallyAssuredDeath.updatePos();
 	}
 
-	return mutuallyAssuredDeath;
 }
 
-void WesternSpies::checkBounds(Bottles &bottles)
+bool WesternSpies::checkBounds(Bottles &bottles)
 {
-	list<Bottle*>::iterator iterBottle = bottles.getBottles().begin();
-	list<Bottle*>::iterator bottleEnd = bottles.getBottles().end();
-	list<WesternSpy*>::iterator iterSpy = spies.begin();
-	list<WesternSpy*>::iterator spyEnd = spies.end();
+	list<Bottle>::iterator iterBottle = bottles.getBottles().begin();
+	list<Bottle>::iterator bottleEnd = bottles.getBottles().end();
+	list<WesternSpy>::iterator iterSpy = spies.begin();
+	list<WesternSpy>::iterator spyEnd = spies.end();
 	FloatRect bottleBounds, enemyBounds;
+	bool hit = false;
 
 	if (!bottles.getBottles().empty())
 	{
-		for (iterBottle; iterBottle != bottleEnd; )
+		for (iterBottle; iterBottle != bottleEnd && !hit; )
 		{
-			for (iterSpy; iterSpy != spyEnd; )
+			for (iterSpy; iterSpy != spyEnd && !hit; )
 			{
-				bottleBounds = (*iterBottle)->getGlobalBounds();
-				enemyBounds = (*iterSpy)->getGlobalBounds();
-				if (bottleBounds.intersects(enemyBounds))
+				bottleBounds = iterBottle->getGlobalBounds();
+				enemyBounds = iterSpy->getGlobalBounds();
+ 				if (bottleBounds.intersects(enemyBounds))
 				{
 					iterBottle = bottles.getBottles().erase(iterBottle);
 					iterSpy = spies.erase(iterSpy);
+					numSpies--;
+					hit = true;
 				}
 				else
 				{
-					iterBottle++;
 					iterSpy++;
 				}
 			}
+			if (!hit) 
+				iterBottle++;
 		}
 	}
+	return hit;
 }

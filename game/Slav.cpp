@@ -7,6 +7,11 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+const int FARTHEST_LEFT = 0;
+const int FARTHEST_RIGHT = WINDOW_WIDTH - 64;
+
 Slav::Slav()
 {
 
@@ -15,6 +20,22 @@ Slav::Slav()
 Slav::Slav(Sprite &slav)
 {
 	this->slav = slav;
+	lives = 5;
+}
+
+void Slav::loseLives()
+{
+	lives--;
+}
+
+void Slav::setLives(int lives)
+{
+	this->lives = lives;
+}
+
+int Slav::getLives()
+{
+	return lives;
 }
 
 FloatRect Slav::getGlobalBounds()
@@ -42,21 +63,30 @@ void Slav::move()
 		// right arrow is pressed: move our ship right 5 pixels
 		slav.move(DISTANCE, 0);
 	}
+
+	Vector2f shipPos = slav.getPosition();
+	if (shipPos.x <= FARTHEST_LEFT)
+	{
+		slav.setPosition(FARTHEST_LEFT, shipPos.y);
+	}
+	else if (shipPos.x >= FARTHEST_RIGHT)
+	{
+		slav.setPosition(FARTHEST_RIGHT, shipPos.y);
+	}
 }
 
 void Slav::checkBounds(MooCows &cows)
 {
-	list<MooCow*>::iterator iterMooCow = cows.getMooCows().begin();
-	list<MooCow*>::iterator cowEnd = cows.getMooCows().end();
+	list<MooCow>::iterator iterMooCow = cows.getMooCows().begin();
+	list<MooCow>::iterator cowEnd = cows.getMooCows().end();
 	FloatRect cowBounds, slavBounds;
 
 	if (!cows.getMooCows().empty())
 	{
-		MooCow* cow = *iterMooCow;
 		for (iterMooCow; iterMooCow != cowEnd; )
 		{
 			slavBounds = getGlobalBounds();
-			cowBounds = cow->getGlobalBounds();
+			cowBounds = iterMooCow->getGlobalBounds();
 			if (cowBounds.intersects(slavBounds))
 			{
 				iterMooCow = cows.getMooCows().erase(iterMooCow);

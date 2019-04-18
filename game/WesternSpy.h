@@ -10,6 +10,7 @@ class WesternSpy
 {
 private:
 	Sprite spy;
+	int health;
 public:
 	WesternSpy();
 	WesternSpy(Sprite &spy);

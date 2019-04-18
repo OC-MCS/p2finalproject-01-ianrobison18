@@ -12,7 +12,7 @@ public:
 	Bottle();
 	Bottle(Sprite &bottle);
 	void updatePosition();
-	Sprite *getBottle();
+	Sprite getBottle();
 	FloatRect getGlobalBounds();
 	void setBottle(Sprite &bottle);
 	bool operator==(Bottle compare);

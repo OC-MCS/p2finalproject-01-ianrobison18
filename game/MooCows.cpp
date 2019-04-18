@@ -26,7 +26,7 @@ MooCows::MooCows(Texture enemyTexture)
 	cowTexture = enemyTexture;
 }
 
-list<MooCow*> MooCows::getMooCows()
+list<MooCow> &MooCows::getMooCows()
 {
 	return cows;
 }
@@ -41,21 +41,18 @@ void MooCows::addMooCow(Vector2f pos)
 	Sprite cow;
 	cow.setPosition(pos);
 	cow.setTexture(cowTexture);
-
-	MooCow *deathIncarnate = new MooCow;
-	deathIncarnate->setMooCow(cow);
-	cows.push_back(deathIncarnate);
+	cows.push_back(MooCow(cow));
 }
 
 void MooCows::updatePos()
 {
-	list<MooCow*>::iterator iter;
+	list<MooCow>::iterator iter;
 
 	for (iter = cows.begin(); iter != cows.end(); )
 	{
-		(*iter)->updatePosition();
-		Vector2f pos = (*iter)->getMooCow().getPosition();
-		if (pos.y >= 1000)
+		iter->updatePosition();
+		Vector2f pos = iter->getMooCow().getPosition();
+		if (pos.y >= 600)
 		{
 			iter = cows.erase(iter);
 		}
@@ -66,10 +63,10 @@ void MooCows::updatePos()
 
 void MooCows::drawMooCows(RenderWindow &win)
 {
-	list<MooCow*>::iterator iter;
+	list<MooCow>::iterator iter;
 
 	for (iter = cows.begin(); iter != cows.end(); iter++)
 	{
-		win.draw((*iter)->getMooCow());
+		win.draw(iter->getMooCow());
 	}
 }

@@ -21,10 +21,11 @@ public:
 	Sprite getSprite();
 	FloatRect getGlobalBounds();
 	int getHealth();
+	void setDeepFried(Texture &deepFried);
 	void setFrames(int frames);
 	void setMovement(float movement);
 	void updatePos();
 	void drawBoris(RenderWindow &win);
-	MooCows throwMooCows(int frames);
-	void checkBounds(Bottles &weapons);
+	void throwMooCows(int frames, MooCows &trueDeath);
+	bool checkBounds(Bottles &weapons);
 };

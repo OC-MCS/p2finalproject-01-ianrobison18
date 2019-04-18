@@ -9,12 +9,12 @@ using namespace sf;
 class MooCows
 {
 private:
-	list<MooCow*> cows;
+	list<MooCow> cows;
 	Texture cowTexture;
 public:
 	MooCows();
 	MooCows(Texture enemyWeapon);
-	list<MooCow*> getMooCows();
+	list<MooCow> &getMooCows();
 	void setTexture(Texture weapon);
 	void addMooCow(Vector2f pos);
 	void updatePos();

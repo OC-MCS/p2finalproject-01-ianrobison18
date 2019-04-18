@@ -19,14 +19,14 @@ void Bottle::updatePosition()
 	bottle.move(0, -20);
 }
 
-Sprite *Bottle::getBottle()
+Sprite Bottle::getBottle()
 {
-	return &bottle;
+	return bottle;
 }
 
 FloatRect Bottle::getGlobalBounds()
 {
-	return getBottle()->getGlobalBounds();
+	return getBottle().getGlobalBounds();
 }
 
 void Bottle::setBottle(Sprite &bottle)
@@ -37,7 +37,7 @@ void Bottle::setBottle(Sprite &bottle)
 bool Bottle::operator==(Bottle compare)
 {
 	bool isEqual;
-	if (bottle.getPosition() == compare.getBottle()->getPosition())
+	if (bottle.getPosition() == compare.getBottle().getPosition())
 	{
 		isEqual = true;
 	}
