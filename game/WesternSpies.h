@@ -21,7 +21,6 @@ public:
 	list<WesternSpy> &getSpies();
 	int getNumSpies();
 	void setFrames(int frames);
-	void setMovement(float movement);
 	void updatePos(float speed, Slav &player);
 	void drawWesternSpies(RenderWindow &win);
 	void throwMooCows(int frames, MooCows &mutuallyAssuredDeath);

@@ -6,6 +6,7 @@
 //========================================================
 #include <iostream>
 #include <list>
+#include <time.h>
 #include "Slav.h"
 #include "Bottles.h"
 #include "WesternSpies.h"
@@ -25,8 +26,9 @@ using namespace sf;
 //============================================================
 
 bool checkFrames(int &frames, bool canFire);
-void checkEnemyFrames(Level currentLevel, int &frames);
-void checkEnemyFrames(BossLevel currentLevel, int &frames);
+void checkEnemyFrames(Level currentLevel, int &frames, int &randomNum);
+void checkEnemyFrames(BossLevel currentLevel, int &frames, int &randomNum);
+int randomFrames(int frames);
 int main() {
 	const int WINDOW_WIDTH = 800; // width of the window
 	const int WINDOW_HEIGHT = 600; // height of the window
@@ -92,9 +94,12 @@ int main() {
 		exit(EXIT_FAILURE);
 	}
 
-	Level levelOne(westernSpyTexture, 80, 0.3f); // the first level
-	Level levelTwo(enemySlavTexture, 60, 0.45f); // the second level
-	BossLevel slavKingFight(borisTexture, deepFriedTexture, 45); // the boss level
+	int level1Frames = 65,
+		level2Frames = 50,
+		bossLevelFrames = 40;
+	Level levelOne(westernSpyTexture, level1Frames, 0.3f); // the first level
+	Level levelTwo(enemySlavTexture, level2Frames, 0.45f); // the second level
+	BossLevel slavKingFight(borisTexture, deepFriedTexture, bossLevelFrames); // the boss level
 	// A sprite is a thing we can draw and manipulate on the screen.
 	// We have to give it a "texture" to specify what it looks like
 
@@ -161,7 +166,10 @@ int main() {
 		fail = false, // if you lost
 		restart = false; // if you want to play again
 	int score = 0, // initial score
-		currentLives = 5; // current number of lives
+		currentLives = 5, // current number of lives
+		randomNumber1 = randomFrames(level1Frames),
+		randomNumber2 = randomFrames(level2Frames),
+		randomNumber3 = randomFrames(bossLevelFrames);
 
 	while (window.isOpen()) {
 		if (onMenu) {
@@ -192,12 +200,12 @@ int main() {
 		}
 		else if (!(gameComplete || fail)) {
 			canFire = checkFrames(frames, canFire);
-			
+
 			if (gameUI.getLevel() == 1) {
 				levelComplete = levelOne.playLevel(window, canFire, enemyFrames, 
 					paused, onMenu, levelStart, fail);
 				
-				checkEnemyFrames(levelOne, enemyFrames);
+				checkEnemyFrames(levelOne, enemyFrames, randomNumber1);
 				if (levelComplete) {
 					gameUI.setLevel(gameUI.getLevel() + 1);
 					levelStart = false;
@@ -213,7 +221,7 @@ int main() {
 			else if (gameUI.getLevel() == 2) {
 				levelComplete = levelTwo.playLevel(window, canFire, enemyFrames,
 					paused, onMenu, levelStart, fail);
-				checkEnemyFrames(levelTwo, enemyFrames);
+				checkEnemyFrames(levelTwo, enemyFrames, randomNumber2);
 				if (levelComplete) {
 					gameUI.setLevel(gameUI.getLevel() + 1);
 					levelStart = false;
@@ -231,7 +239,7 @@ int main() {
 				playCheekiBreeki = false;
 				levelComplete = slavKingFight.playLevel(window, canFire, enemyFrames, 
 					paused, onMenu, levelStart, fail);
-				checkEnemyFrames(slavKingFight, enemyFrames);
+				checkEnemyFrames(slavKingFight, enemyFrames, randomNumber3);
 				if (levelComplete) {
 					levelStart = false;
 					gameComplete = true;
@@ -315,10 +323,11 @@ Purpose: resets enemy frames so that the value doesn't get too high for the int
 Parameters: level, enemy frames
 Returns: nothing
 */
-void checkEnemyFrames(Level currentLevel, int &frames) {
+void checkEnemyFrames(Level currentLevel, int &frames, int &randomNum) {
 	frames++;
-	if (frames == currentLevel.getEnemyFrames()) {
+	if (frames == randomNum) {
 		frames = 0;
+		randomNum = randomFrames(randomNum);
 	}
 }
 
@@ -328,9 +337,24 @@ Purpose: overloaded function for boss level
 Parameters: level, enemy frames
 Returns: nothing
 */
-void checkEnemyFrames(BossLevel currentLevel, int &frames) {
+void checkEnemyFrames(BossLevel currentLevel, int &frames, int &randomNum) {
 	frames++;
-	if (frames == currentLevel.getEnemyFrames()) {
+	if (frames == randomNum) {
 		frames = 0;
+		randomNum = randomFrames(randomNum);
 	}
+}
+
+/*
+Name: random frames
+Purpose: gets random frames for  enemy fire
+Parameters: frames
+Returns: the frames
+*/
+int randomFrames(int frames)
+{
+	int lowerbound = frames / 2;
+	srand(time(0));
+	int randomFrames = rand() % frames + lowerbound;
+	return randomFrames;
 }

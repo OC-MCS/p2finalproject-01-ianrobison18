@@ -23,7 +23,6 @@ Level::Level(Texture &enemyTexture,  int enemyFrames, float speed) {
 	this->enemyTexture = enemyTexture;
 	WesternSpies enemy(enemyTexture);
 	enemies = enemy;
-	enemies.setFrames(60);
 	this->speed = speed;
 	this->enemyFrames = enemyFrames;
 }

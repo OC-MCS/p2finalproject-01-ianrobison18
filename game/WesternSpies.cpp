@@ -65,8 +65,6 @@ void WesternSpies::setFrames(int frames) {
 	framesTilFire = frames;
 }
 
-
-
 /*
 Name: update position
 Purpose: move the spies
@@ -126,8 +124,6 @@ void WesternSpies::throwMooCows(int frames, MooCows &mutuallyAssuredDeath) {
 		for (int i = 1; i < randomSpy; i++) {
 			iter++;
 		}
-
-		
 		mutuallyAssuredDeath.addMooCow(iter->getSpy().getPosition());
 	}
 	if (!mutuallyAssuredDeath.getMooCows().empty()) {
