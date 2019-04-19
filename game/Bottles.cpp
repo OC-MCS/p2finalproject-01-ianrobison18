@@ -7,32 +7,54 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
+/*
+Name: Bottles
+Purpose: default constructor
+Parameters: nothing
+Returns: N/A
+*/
+Bottles::Bottles(){}
 
-Bottles::Bottles()
-{
-
-}
-
-Bottles::Bottles(Texture bottleTexture)
-{
+/*
+Name: Bottles
+Purpose: initializes list of bottles
+Parameters: bottle texture
+Returns: N/A
+*/
+Bottles::Bottles(Texture bottleTexture) {
 	this->bottleTexture = bottleTexture;
 }
 
-list<Bottle>& Bottles::getBottles()
-{
+/*
+Name: get bottles
+Purpose: gets list of bottles
+Parameters: nothing
+Returns: bottle list
+*/
+list<Bottle>& Bottles::getBottles() {
 	return bottles;
 }
 
-void Bottles::addBottle(Vector2f pos)
-{
+/*
+Name: add bottles
+Purpose: adds an instance to the list
+Parameters: position
+Returns: nothing
+*/
+void Bottles::addBottle(Vector2f pos) {
 	Sprite weapon;
 	weapon.setTexture(bottleTexture);
 	weapon.setPosition(pos);
 	bottles.push_back(Bottle(weapon));
 }
 
-void Bottles::updatePos()
-{
+/*
+Name: update position
+Purpose: move bottles
+Parameters: nothing
+Returns: nothing
+*/
+void Bottles::updatePos() {
 	list<Bottle>::iterator iter;
 
 	for (iter = bottles.begin(); iter != bottles.end(); )
@@ -48,13 +70,16 @@ void Bottles::updatePos()
 	}
 }
 
-void Bottles::drawBottles(RenderWindow &win)
-{
+/*
+Name: draw bottles
+Purpose: renders bottles on screen
+Parameters: window
+Returns: nothing
+*/
+void Bottles::drawBottles(RenderWindow &win) {
 	list<Bottle>::iterator iter;
 
-	for (iter = bottles.begin(); iter != bottles.end(); iter++)
-	{
+	for (iter = bottles.begin(); iter != bottles.end(); iter++) {
 		win.draw(iter->getBottle());
 	}
 }
-

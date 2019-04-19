@@ -12,15 +12,16 @@ using namespace sf;
 class BossLevel
 {
 private:
-	UI gameUI;
-	Sprite background;
-	Slav player;
-	Bottles playerWeapon;
-	Boris boss;
-	Texture enemyTexture,
-		deepFriedTexture;
-	MooCows enemyWeapon;
-	int bossFrames, score;
+	UI gameUI; // level ui
+	Sprite background; // background
+	Slav player; // player
+	Bottles playerWeapon; // player's weapon
+	Boris boss; // the slav king himself
+	Texture enemyTexture, // boss texture
+		deepFriedTexture; // his second texture
+	MooCows enemyWeapon; // the boss's weapon
+	int bossFrames, // the frames until he fires
+		score; // current score
 public:
 	BossLevel(Texture &bossTexture, Texture &secondTexture, int bossFrames);
 	void restartLevel(Texture &bossTexture, Texture &secondTexture);

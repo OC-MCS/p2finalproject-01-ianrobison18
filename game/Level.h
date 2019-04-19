@@ -12,15 +12,17 @@ using namespace sf;
 class Level
 {
 private:
-	UI gameUI;
-	Sprite background;
-	Slav player;
-	Bottles playerWeapon;
-	WesternSpies enemies;
-	Texture enemyTexture;
-	MooCows enemyWeapon;
-	int level, enemyFrames, score;
-	float speed;
+	UI gameUI; // ui for level
+	Sprite background; // level background
+	Slav player; // player
+	Bottles playerWeapon; // player's weapon
+	WesternSpies enemies; // level enemies
+	Texture enemyTexture; // current enemy texture
+	MooCows enemyWeapon; // enemy weapon
+	int level, // current level
+		enemyFrames, // frames until enemy fires
+		score; // current score
+	float speed; // speed of enemies
 public:
 	Level();
 	Level(Texture &enemyTexture, int enemyFrames, float speed);

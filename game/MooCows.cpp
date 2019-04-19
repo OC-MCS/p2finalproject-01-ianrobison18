@@ -7,53 +7,65 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-MooCows::MooCows()
-{
-	if (!cowTexture.loadFromFile("mooCow.png"))
-	{
+/*
+Name: MooCows
+Purpose: initialize the moocows
+Parameters: nothing
+Returns: N/A
+*/
+MooCows::MooCows() {
+	if (!cowTexture.loadFromFile("mooCow.png")) {
 		cout << "Unable to load mooCow texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
 }
 
-MooCows::MooCows(Texture enemyTexture)
-{
-	if (!enemyTexture.loadFromFile("mooCow.png"))
-	{
-		cout << "Unable to load mooCow texture!" << endl;
-		exit(EXIT_FAILURE);
-	}
-	cowTexture = enemyTexture;
-}
-
-list<MooCow> &MooCows::getMooCows()
-{
+/*
+Name: get moocows
+Purpose: get mowcows
+Parameters: nothing
+Returns: MOOCOWS!!!!
+*/
+list<MooCow> &MooCows::getMooCows() {
 	return cows;
 }
 
-void MooCows::setTexture(Texture enemyTexture)
-{
+/*
+Name: set texture
+Purpose: set the texture
+Parameters: texture
+Returns: nothing
+*/
+void MooCows::setTexture(Texture enemyTexture) {
 	cowTexture = enemyTexture;
 }
 
-void MooCows::addMooCow(Vector2f pos)
-{
+/*
+Name: add moocow
+Purpose: add to the list
+Parameters: position
+Returns: nothing
+*/
+void MooCows::addMooCow(Vector2f pos) {
 	Sprite cow;
 	cow.setPosition(pos);
 	cow.setTexture(cowTexture);
 	cows.push_back(MooCow(cow));
 }
 
-void MooCows::updatePos()
-{
+/*
+Name: update position
+Purpose: move moocows
+Parameters: nothing
+Returns nothing
+*/
+void MooCows::updatePos() {
 	list<MooCow>::iterator iter;
 
-	for (iter = cows.begin(); iter != cows.end(); )
-	{
+	for (iter = cows.begin(); iter != cows.end(); ) {
 		iter->updatePosition();
 		Vector2f pos = iter->getMooCow().getPosition();
-		if (pos.y >= 600)
-		{
+		if (pos.y >= 600) {
 			iter = cows.erase(iter);
 		}
 		else
@@ -61,12 +73,16 @@ void MooCows::updatePos()
 	}
 }
 
-void MooCows::drawMooCows(RenderWindow &win)
-{
+/*
+Name: draw moocows
+Purpose: render the cows
+Parameters: window
+Returns: nothing
+*/
+void MooCows::drawMooCows(RenderWindow &win) {
 	list<MooCow>::iterator iter;
 
-	for (iter = cows.begin(); iter != cows.end(); iter++)
-	{
+	for (iter = cows.begin(); iter != cows.end(); iter++) {
 		win.draw(iter->getMooCow());
 	}
 }

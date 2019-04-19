@@ -18,11 +18,6 @@ using namespace std;
 #include <SFML/Audio.hpp>
 using namespace sf;
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
-const int FARTHEST_LEFT = 0;
-const int FARTHEST_RIGHT = WINDOW_WIDTH - 64;
-
 //============================================================
 // Ian Robison
 // Programming II
@@ -33,9 +28,12 @@ bool checkFrames(int &frames, bool canFire);
 void checkEnemyFrames(Level currentLevel, int &frames);
 void checkEnemyFrames(BossLevel currentLevel, int &frames);
 int main() {
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+	const int WINDOW_WIDTH = 800; // width of the window
+	const int WINDOW_HEIGHT = 600; // height of the window
+	const int FARTHEST_LEFT = 0; // how far left the player can go
+	const int FARTHEST_RIGHT = WINDOW_WIDTH - 64; // how far right the player can go
 
+	// the window for the game
 	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "The Adventures of Blyatman");
 	// Limit the framerate to 60 frames per second
 	window.setFramerateLimit(60);
@@ -43,104 +41,104 @@ int main() {
 	// load textures from file into memory. This doesn't display anything yet.
 	// Notice we do this *before* going into animation loop.
 	
-	Texture mainMenu;
+	Texture mainMenu; // main menu texture
 	if (!mainMenu.loadFromFile("mainMenu.png")) {
 		cout << "Unable to load menu texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture starsTexture;
-	if (!starsTexture.loadFromFile("StPetersburg.png")) {
+	Texture slavBackgroundTexture; // background texture
+	if (!slavBackgroundTexture.loadFromFile("StPetersburg.png")) {
 		cout << "Unable to load stars texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture endingTexture;
+	Texture endingTexture; // ending screen texture
 	if (!endingTexture.loadFromFile("gameEndScreen.png")) {
 		cout << "Unable to load ending Screen texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture failTexture;
+	Texture failTexture; // game over screen texture
 	if (!failTexture.loadFromFile("GameOver.png")) {
 		cout << "Unable to load game over texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture slavTexture;
+	Texture slavTexture; // player texture
 	if (!slavTexture.loadFromFile("Slav.png")) {
 		cout << "Unable to load slav texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture bottleTexture;
+	Texture bottleTexture; // bottle texture
 	if (!bottleTexture.loadFromFile("Bottle.png")) {
 		cout << "Unable to load bottle texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture westernSpyTexture;
+	Texture westernSpyTexture; // enemy texture
 	if (!westernSpyTexture.loadFromFile("enemy.png")) {
 		cout << "Unable to load spy texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture enemySlavTexture;
+	Texture enemySlavTexture; // second enemy texture
 	if (!enemySlavTexture.loadFromFile("enemySlav.png")) {
 		cout << "Unable to load enemy Slav texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture borisTexture;
+	Texture borisTexture; // boss texture
 	if (!borisTexture.loadFromFile("SlavKing.png")) {
 		cout << "Unable to load Slav King texture!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Texture deepFriedTexture;
+	Texture deepFriedTexture; // secondary boss texture
 	if (!deepFriedTexture.loadFromFile("SlavKing2.png")) {
 		cout << "Can't load from slavKing 2 from file.\n";
 		exit(EXIT_FAILURE);
 	}
 
-	Level levelOne(westernSpyTexture, 80, 0.3f);
-	Level levelTwo(enemySlavTexture, 60, 0.45f);
-	BossLevel slavKingFight(borisTexture, deepFriedTexture, 45);
+	Level levelOne(westernSpyTexture, 80, 0.3f); // the first level
+	Level levelTwo(enemySlavTexture, 60, 0.45f); // the second level
+	BossLevel slavKingFight(borisTexture, deepFriedTexture, 45); // the boss level
 	// A sprite is a thing we can draw and manipulate on the screen.
 	// We have to give it a "texture" to specify what it looks like
 
-	Sprite menuBackground;
+	Sprite menuBackground; // main menu sprite
 	menuBackground.setTexture(mainMenu);
-	Sprite endingBackground;
+	Sprite endingBackground; // ending screen sprite
 	endingBackground.setTexture(endingTexture);
-	Sprite gameOver;
+	Sprite gameOver; // game ovoer screen sprite
 	gameOver.setTexture(failTexture);
-	Sprite background;
-	background.setTexture(starsTexture);
+	Sprite background; // background sprite
+	background.setTexture(slavBackgroundTexture);
 	levelOne.setBackground(background);
 	levelTwo.setBackground(background);
 	slavKingFight.setBackground(background);
 
 	// Slav sprite data
-	Sprite slavic;
+	Sprite slavic; // player sprite
 	slavic.setTexture(slavTexture);
 	float slavX = 300;
 	float slavY = 500;
 	slavic.setPosition(slavX, slavY);
-	Slav slav(slavic);
+	Slav slav(slavic); // the player
 	levelOne.setPlayer(slav);
 	levelTwo.setPlayer(slav);
 	slavKingFight.setPlayer(slav);
 
 	// Bottle data
-	Bottles bottles(bottleTexture);
+	Bottles bottles(bottleTexture); // player weapon
 	levelOne.setPlayerWeapon(bottles);
 	levelTwo.setPlayerWeapon(bottles);
 	slavKingFight.setPlayerWeapon(bottles);
 
-	Music gameMusic;
+	Music gameMusic; // in-game music
 	if (!gameMusic.openFromFile("gameMusic.ogg")) {
 		cout << "Unable to load in game music!" << endl;
 		exit(EXIT_FAILURE);
 	}
 
-	SoundBuffer cheekiBuffer;
+	SoundBuffer cheekiBuffer; // sound the boss says at the beginning of the level
 	if (!cheekiBuffer.loadFromFile("cheekiBreeki.ogg")) {
 		cout << "unable to load cheeki breeki!" << endl;
 		exit(EXIT_FAILURE);
 	}
-	Sound cheekiBreeki;
+	Sound cheekiBreeki; // sound in sound class
 	cheekiBreeki.setBuffer(cheekiBuffer);
 	cheekiBreeki.setVolume(100.f);
 	bool playCheekiBreeki = true;
@@ -148,22 +146,22 @@ int main() {
 	gameMusic.play();
 	gameMusic.setLoop(true);
 
-	int frames = 0;
-	int enemyFrames = 0;
-	UI gameUI;
+	int frames = 0; // initial frames for checking if play can fire
+	int enemyFrames = 0; // checking if enemy can fire
+	UI gameUI; // the gam ui
 	gameUI.setLevel(1);
 
-	bool canFire = true,
-		levelComplete = false,
-		paused = false,
-		onMenu = true,
-		close = false,
-		levelStart = false,
-		gameComplete = false,
-		fail = false,
-		restart = false;
-	int score = 0,
-		currentLives = 5;
+	bool canFire = true, // if can fire
+		levelComplete = false, // if level complete
+		paused = false, // if paused
+		onMenu = true, // if on main menu
+		close = false, // if player wants to close
+		levelStart = false, // if level has started
+		gameComplete = false, // if game is complete
+		fail = false, // if you lost
+		restart = false; // if you want to play again
+	int score = 0, // initial score
+		currentLives = 5; // current number of lives
 
 	while (window.isOpen()) {
 		if (onMenu) {
@@ -293,6 +291,12 @@ int main() {
 	return 0;
 }
 
+/*
+Name: check frames
+Purpose: checks to see if player can fire
+Parameters: current frame, if player can fire
+Returns: if player can fire
+*/
 bool checkFrames(int &frames, bool canFire) {
 	frames++;
 	if (frames == 60) {
@@ -305,6 +309,12 @@ bool checkFrames(int &frames, bool canFire) {
 	return canFire;
 }
 
+/*
+Name: check enemy frames
+Purpose: resets enemy frames so that the value doesn't get too high for the int
+Parameters: level, enemy frames
+Returns: nothing
+*/
 void checkEnemyFrames(Level currentLevel, int &frames) {
 	frames++;
 	if (frames == currentLevel.getEnemyFrames()) {
@@ -312,6 +322,12 @@ void checkEnemyFrames(Level currentLevel, int &frames) {
 	}
 }
 
+/*
+Name: check enemy frames
+Purpose: overloaded function for boss level
+Parameters: level, enemy frames
+Returns: nothing
+*/
 void checkEnemyFrames(BossLevel currentLevel, int &frames) {
 	frames++;
 	if (frames == currentLevel.getEnemyFrames()) {

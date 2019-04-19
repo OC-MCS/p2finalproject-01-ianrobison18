@@ -9,8 +9,7 @@ using namespace sf;
 class WesternSpy
 {
 private:
-	Sprite spy;
-	int health;
+	Sprite spy; // spy sprite
 public:
 	WesternSpy();
 	WesternSpy(Sprite &spy);

@@ -9,8 +9,8 @@ using namespace sf;
 class MooCows
 {
 private:
-	list<MooCow> cows;
-	Texture cowTexture;
+	list<MooCow> cows; // list of cows
+	Texture cowTexture; // the texture for the cows
 public:
 	MooCows();
 	MooCows(Texture enemyWeapon);

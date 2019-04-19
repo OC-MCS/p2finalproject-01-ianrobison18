@@ -7,7 +7,7 @@ using namespace sf;
 class MooCow
 {
 private:
-	Sprite cow;
+	Sprite cow; // cow sprite
 public:
 	MooCow();
 	MooCow(Sprite &cow);

@@ -7,7 +7,7 @@ using namespace sf;
 class Bottle
 {
 private:
-	Sprite bottle;
+	Sprite bottle; // sprite cranberry bottle
 public:
 	Bottle();
 	Bottle(Sprite &bottle);

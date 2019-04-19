@@ -4,51 +4,88 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-WesternSpy::WesternSpy()
-{
+/*
+Name: Western Spy
+Purpose: default constructor
+Parameters: nothing
+Returns: N/A
+*/
+WesternSpy::WesternSpy() {
 
 }
 
-WesternSpy::WesternSpy(Sprite &spy)
-{
+/*
+Name: WesternSpy
+Purpose: initializes an instance
+Parameters: spy sprite
+Returns: N/A
+*/
+WesternSpy::WesternSpy(Sprite &spy) {
 	this->spy = spy;
 }
 
-void WesternSpy::updatePosition(float speed)
-{
+/*
+Name: update position
+Purpose: move the spy
+Parameters: speed
+Returns: nothing
+*/
+void WesternSpy::updatePosition(float speed) {
 	spy.move(0, speed);
 }
 
-void WesternSpy::setSpeed(float speed)
-{
+/*
+Name: set speed
+Purpose: set movement speed
+Parameters: speed
+Returns: nothing
+*/
+void WesternSpy::setSpeed(float speed) {
 	
 }
 
-Sprite WesternSpy::getSpy()
-{
+/*
+Name: get spy
+Purpose: gets the sprite
+Parameters: nothing
+Returns: sprite
+*/
+Sprite WesternSpy::getSpy() {
 	return spy;
 }
 
-
-FloatRect WesternSpy::getGlobalBounds()
-{
+/*
+Name: get global bounds
+Purpose: gets the bounds of the spy
+Parameters: nothing
+Returns: bounds
+*/
+FloatRect WesternSpy::getGlobalBounds() {
 	return getSpy().getGlobalBounds();
 }
 
-void WesternSpy::setSpy(Sprite &spy)
-{
+/*
+Name: set spy
+Purpose: sets the sprite
+Parameters: sprite
+Returns: nothing
+*/
+void WesternSpy::setSpy(Sprite &spy) {
 	this->spy = spy;
 }
 
-bool WesternSpy::operator==(WesternSpy compare)
-{
+/*
+Name: == operator
+Purpose: compare two spies
+Parameters: other spy
+Returns: a bool
+*/
+bool WesternSpy::operator==(WesternSpy compare) {
 	bool isEqual;
-	if (spy.getPosition() == compare.getSpy().getPosition())
-	{
+	if (spy.getPosition() == compare.getSpy().getPosition()) {
 		isEqual = true;
 	}
-	else
-	{
+	else {
 		isEqual = false;
 	}
 

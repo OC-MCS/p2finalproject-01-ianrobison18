@@ -10,19 +10,19 @@ using namespace sf;
 class UI
 {
 private:
-	RectangleShape pauseMenu, 
-		exitButton,
-		playButton, 
-		levelBox;
-	Text westernSpiesLeft,
-		bossLives,
-		slavLives,
-		score,
-		pauseText,
-		playText,
-		exitText;
-	Font font;
-	int levelNum;
+	RectangleShape pauseMenu, // pause menu bos
+		exitButton, // exit button
+		playButton, // play button
+		levelBox; // level info boss
+	Text westernSpiesLeft, // text showing spies left
+		bossLives, // text showing boss lives
+		slavLives, // text showing player lives
+		score, // current score text
+		pauseText, // text showing that you're paused
+		playText, // text for play button
+		exitText; // text for exiting level or game
+	Font font; // font for the game
+	int levelNum; // for which level you're on
 public:
 	UI();
 	int getLevel();

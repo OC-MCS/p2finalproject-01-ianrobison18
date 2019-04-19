@@ -8,8 +8,8 @@ using namespace sf;
 class Slav
 {
 private:
-	Sprite slav;
-	int lives;
+	Sprite slav; // slav sprite
+	int lives; // player lives
 public:
 	Slav();
 	Slav(Sprite &slav);

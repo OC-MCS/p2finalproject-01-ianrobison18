@@ -9,12 +9,13 @@ using namespace sf;
 class Boris
 {
 private:
-	Sprite boris;
-	MooCows trueDeath;
-	int framesTilFire,
-		health;
-	float speed;
-	bool direction;
+	Sprite boris; // boss sprite
+	MooCows trueDeath; // him weapon
+	int framesTilFire, // frames until he fires
+		health; // his health
+	float speed; // his speed
+	bool direction; // his current direction
+	// false = left, true = right
 public:
 	Boris();
 	Boris(Texture &bossTexture);

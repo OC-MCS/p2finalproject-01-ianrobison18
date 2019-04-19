@@ -9,8 +9,8 @@ using namespace sf;
 class Bottles
 {
 private:
-	list<Bottle> bottles;
-	Texture bottleTexture;
+	list<Bottle> bottles; // list of bottles
+	Texture bottleTexture; // texture for the bottles
 public:
 	Bottles();
 	Bottles(Texture bottleTexture);

@@ -8,8 +8,14 @@ using namespace sf;
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int thickness = 2;
-UI::UI()
-{
+
+/*
+Name: UI 
+Purpose: default constructor
+Parameters: nothing
+Returns: N/A
+*/
+UI::UI() {
 	levelNum = 1;
 
 	// Pause Menu initializing
@@ -49,18 +55,33 @@ UI::UI()
 	exitText.setCharacterSize(20);
 }
 
-int UI::getLevel()
-{
+/*
+Name: get level
+Purpose: get the level number
+Parameters: nothing
+Returns: the level
+*/
+int UI::getLevel() {
 	return levelNum;
 }
 
-void UI::setLevel(int level)
-{
+/*
+Name: set level
+Purpose: set current level
+Parameters: level
+Returns: nothing
+*/
+void UI::setLevel(int level) {
 	this->levelNum = level;
 }
 
-void UI::drawPreLevelMenu(RenderWindow &win)
-{
+/*
+Name: draw pre level menu
+Purpose: draw menu that appears before level starts
+Parameters: window
+Returns: nothing
+*/
+void UI::drawPreLevelMenu(RenderWindow &win) {
 	pauseText.setPosition(355, 150);
 	pauseText.setString("Ready?");
 	playButton.setPosition(250, 200);
@@ -78,57 +99,68 @@ void UI::drawPreLevelMenu(RenderWindow &win)
 	win.draw(exitText);
 }
 
-void UI::handlePreLevelMenu(Vector2f mouse, bool &levelStart, bool &menu)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: handle prelevel menu
+Purpose: to handle your selection
+Parameters: mouse pos, bools handling selection
+Returns: nothing
+*/
+void UI::handlePreLevelMenu(Vector2f mouse, bool &levelStart, bool &menu) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		levelStart = true;
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		menu = true;
 	}
 }
 
-void UI::pauseMenuMouse(Vector2f mouse)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: pause menu mouse
+Purpose: show which button your mouse is over
+Parameters: mouse pos
+Returns: nothing
+*/
+void UI::pauseMenuMouse(Vector2f mouse) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::Blue);
 		playText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		playButton.setFillColor(Color::White);
 		playText.setFillColor(Color::Blue);
 	}
-
-	if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	if (exitButton.getGlobalBounds().contains(mouse)) {
 		exitButton.setFillColor(Color::Blue);
 		exitText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		exitButton.setFillColor(Color::White);
 		exitText.setFillColor(Color::Blue);
 	}
 }
 
-void UI::handlePauseMouse(Vector2f mouse, bool &pause, bool &menu)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: handle pause mouse
+Purpose: to handle your selection
+Parameters: mouse pos, bools handling selection
+Returns: nothing
+*/
+void UI::handlePauseMouse(Vector2f mouse, bool &pause, bool &menu) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		pause = false;
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		menu = true;
 	}
 }
 
-void UI::drawPauseMenu(RenderWindow &win)
-{
+/*
+Name: draw pause menu
+Purpose: draw pause menu
+Parameters: window
+Returns: nothing
+*/
+void UI::drawPauseMenu(RenderWindow &win) {
 	pauseText.setPosition(345, 150);
 	pauseText.setString("PAUSED");
 	playButton.setPosition(250, 200);
@@ -146,33 +178,38 @@ void UI::drawPauseMenu(RenderWindow &win)
 	win.draw(exitText);
 }
 
-void UI::mainMenuMouse(Vector2f mouse)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: main menu mouse
+Purpose: show which button your mouse is over
+Parameters: mouse pos
+Returns: nothing
+*/
+void UI::mainMenuMouse(Vector2f mouse) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::Blue);
 		playText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		playButton.setFillColor(Color::White);
 		playText.setFillColor(Color::Blue);
 	}
-
-	if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	if (exitButton.getGlobalBounds().contains(mouse)) {
 		exitButton.setFillColor(Color::Blue);
 		exitText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		exitButton.setFillColor(Color::White);
 		exitText.setFillColor(Color::Blue);
 	}
 }
 
-void UI::drawMainMenu(RenderWindow &win, Sprite mainMenu)
-{
+/*
+Name: draw main menu
+Purpose: draw main menu
+Parameters: window
+Returns: nothing
+*/
+void UI::drawMainMenu(RenderWindow &win, Sprite mainMenu) {
 	playButton.setPosition(250, 250);
 	playText.setPosition(350, 270);
 	playText.setString("Play Game");
@@ -187,20 +224,28 @@ void UI::drawMainMenu(RenderWindow &win, Sprite mainMenu)
 	win.draw(exitText);
 }
 
-void UI::handleMainMenuMouse(Vector2f mouse, bool &menu, bool &close)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: handle main menu mouse
+Purpose: to handle your selection
+Parameters: mouse pos, bools handling selection
+Returns: nothing
+*/
+void UI::handleMainMenuMouse(Vector2f mouse, bool &menu, bool &close) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		menu = false;
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		close = true;
 	}
 }
 
-void UI::drawLevelText(RenderWindow &win, WesternSpies spies, Slav player, int points)
-{
+/*
+Name: draw level text
+Purpose: draw text giving info about the current level
+Parameters: window
+Returns: nothing
+*/
+void UI::drawLevelText(RenderWindow &win, WesternSpies spies, Slav player, int points) {
 	// Box holding level info
 	Vector2f size(WINDOW_WIDTH, 35);
 	levelBox.setFillColor(Color::Black);
@@ -234,8 +279,13 @@ void UI::drawLevelText(RenderWindow &win, WesternSpies spies, Slav player, int p
 	win.draw(score);
 }
 
-void UI::drawBossText(RenderWindow &win, Boris boss, Slav player, int points)
-{
+/*
+Name: draw boss text
+Purpose: draw text giving info about the boss level
+Parameters: window
+Returns: nothing
+*/
+void UI::drawBossText(RenderWindow &win, Boris boss, Slav player, int points) {
 	// Box holding level info
 	Vector2f size(WINDOW_WIDTH, 35);
 	levelBox.setFillColor(Color::Black);
@@ -269,8 +319,13 @@ void UI::drawBossText(RenderWindow &win, Boris boss, Slav player, int points)
 	win.draw(this->score);
 }
 
-void UI::displayEndingScreen(RenderWindow &win, Sprite endScreen, int points)
-{
+/*
+Name: draw ending screen
+Purpose: draw screen that displays after the game is complete
+Parameters: window
+Returns: nothing
+*/
+void UI::displayEndingScreen(RenderWindow &win, Sprite endScreen, int points) {
 	playButton.setPosition(250, 410);
 	playText.setPosition(355, 430);
 	playText.setString("Play Again");
@@ -300,45 +355,53 @@ void UI::displayEndingScreen(RenderWindow &win, Sprite endScreen, int points)
 	win.draw(score);
 }
 
-void UI::endingScreenMouse(Vector2f mouse)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: ending screen mouse
+Purpose: show which button your mouse is over
+Parameters: mouse pos
+Returns: nothing
+*/
+void UI::endingScreenMouse(Vector2f mouse) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::Blue);
 		playText.setFillColor(Color::White);
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::White);
 		playText.setFillColor(Color::Blue);
 	}
-	if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	if (exitButton.getGlobalBounds().contains(mouse)) {
 		exitButton.setFillColor(Color::Blue);
 		exitText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		exitButton.setFillColor(Color::White);
 		exitText.setFillColor(Color::Blue);
 	}
 }
 
-void UI::handleEndingScreen(Vector2f mouse, bool &close, bool &restart)
-{
-
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: handle ending screen mouse
+Purpose: to handle your selection
+Parameters: mouse pos, bools handling selection
+Returns: nothing
+*/
+void UI::handleEndingScreen(Vector2f mouse, bool &close, bool &restart) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		restart = true;
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		close = true;
 	}
 }
 
-void UI::displayFailScreen(RenderWindow &win, Sprite failScreen)
-{
+/*
+Name: draw game over screen
+Purpose: draw game over screen
+Parameters: window
+Returns: nothing
+*/
+void UI::displayFailScreen(RenderWindow &win, Sprite failScreen) {
 	/*playButton.setPosition(250, 230);
 	playText.setPosition(353, 250);
 	playText.setString("Play Again");*/
@@ -353,30 +416,37 @@ void UI::displayFailScreen(RenderWindow &win, Sprite failScreen)
 	win.draw(exitText);
 }
 
-void UI::failScreenMouse(Vector2f mouse)
-{
-	if (playButton.getGlobalBounds().contains(mouse))
-	{
+/*
+Name: fail screen mouse
+Purpose: show which button your mouse is over
+Parameters: mouse pos
+Returns: nothing
+*/
+void UI::failScreenMouse(Vector2f mouse) {
+	if (playButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::Blue);
 		playText.setFillColor(Color::White);
 	}
-	else if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	else if (exitButton.getGlobalBounds().contains(mouse)) {
 		playButton.setFillColor(Color::White);
 		playText.setFillColor(Color::Blue);
 	}
-	if (exitButton.getGlobalBounds().contains(mouse))
-	{
+	if (exitButton.getGlobalBounds().contains(mouse)) {
 		exitButton.setFillColor(Color::Blue);
 		exitText.setFillColor(Color::White);
 	}
-	else
-	{
+	else {
 		exitButton.setFillColor(Color::White);
 		exitText.setFillColor(Color::Blue);
 	}
 }
 
+/*
+Name: handle fail screen mouse
+Purpose: to handle your selection
+Parameters: mouse pos, bools handling selection
+Returns: nothing
+*/
 void UI::handleFailScreen(Vector2f mouse, bool &onMenu, bool &restart) {
 	if (exitButton.getGlobalBounds().contains(mouse)) {
 		onMenu = true;

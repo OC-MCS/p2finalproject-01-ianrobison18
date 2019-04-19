@@ -4,47 +4,77 @@ using namespace std;
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-Bottle::Bottle()
-{
+/*
+Name: Bottle
+Purpose: default constructor
+Parameters: nothing 
+Returns: N/A
+*/
+Bottle::Bottle() {}
 
-}
-
-Bottle::Bottle(Sprite &bottle)
-{
+/*
+Name: Bottle
+Purpose: initialize a bottle
+Parameters: sprite cranberry
+Returns: N/A
+*/
+Bottle::Bottle(Sprite &bottle) {
 	this->bottle = bottle;
 }
 
-void Bottle::updatePosition()
-{
+/*
+Name: update position
+Purpose: move bottle
+Parameters: nothing
+Returns: nothing
+*/
+void Bottle::updatePosition() {
 	bottle.move(0, -20);
 }
 
-Sprite Bottle::getBottle()
-{
+/*
+Name: get Bottle
+Purpose: get bottle
+Parameters: nothing
+Returns: Sprite cranberry
+*/
+Sprite Bottle::getBottle() {
 	return bottle;
 }
 
-FloatRect Bottle::getGlobalBounds()
-{
+/*
+Name: get global bounds
+Purpose: get the bounds of the bottle
+Parameters: nothing
+Returns: bounds
+*/
+FloatRect Bottle::getGlobalBounds() {
 	return getBottle().getGlobalBounds();
 }
 
-void Bottle::setBottle(Sprite &bottle)
-{
+/*
+Name: set Bottle
+Purpose: set bottle
+Parameters: Sprite cranberry
+Returns: nothing
+*/
+void Bottle::setBottle(Sprite &bottle) {
 	this->bottle = bottle;
 }
 
-bool Bottle::operator==(Bottle compare)
-{
+/*
+Name: == operator
+Purpose: to compare two bottles to see which shall dominate
+Parameters: other bottle of sprite cranberry
+Returns: bool
+*/
+bool Bottle::operator==(Bottle compare) {
 	bool isEqual;
-	if (bottle.getPosition() == compare.getBottle().getPosition())
-	{
+	if (bottle.getPosition() == compare.getBottle().getPosition()) {
 		isEqual = true;
 	}
-	else
-	{
+	else {
 		isEqual = false;
 	}
-
 	return isEqual;
 }

@@ -5,10 +5,21 @@ using namespace sf;
 #include "Level.h"
 #include "UI.h"
 
+/*
+Name: level
+Purpose: default constructor
+Parameters: nothing
+Returns: N/A
+*/
 Level::Level(){}
 
-Level::Level(Texture &enemyTexture,  int enemyFrames, float speed)
-{
+/*
+Name: Level
+Purpose: initializes a level
+Parameters: enemy texture, enemy frames, enemy speed
+Returns: N/A
+*/
+Level::Level(Texture &enemyTexture,  int enemyFrames, float speed) {
 	this->enemyTexture = enemyTexture;
 	WesternSpies enemy(enemyTexture);
 	enemies = enemy;
@@ -17,8 +28,13 @@ Level::Level(Texture &enemyTexture,  int enemyFrames, float speed)
 	this->enemyFrames = enemyFrames;
 }
 
-void Level::restartLevel(Texture &enemyTexture)
-{
+/*
+Name: restart level
+Purpose: if player dies or wants to play again, reset level
+Parameters: texture to reinitialize enemies
+Returns: nothing
+*/
+void Level::restartLevel(Texture &enemyTexture) {
 	this->enemyTexture = enemyTexture;
 	WesternSpies enemy(enemyTexture);
 	enemies = enemy;
@@ -27,8 +43,13 @@ void Level::restartLevel(Texture &enemyTexture)
 	this->enemyFrames = enemyFrames;
 }
 
-void Level::renderLevel(RenderWindow &win, Sprite background)
-{
+/*
+Name: render level
+Purpose: draw level
+Parameters: window, background
+Returns: nothing
+*/
+void Level::renderLevel(RenderWindow &win, Sprite background) {
 	win.draw(background);
 	win.draw(player.getSlav());
 	playerWeapon.drawBottles(win);
@@ -37,66 +58,132 @@ void Level::renderLevel(RenderWindow &win, Sprite background)
 	gameUI.drawLevelText(win, enemies, player, score);
 }
 
-void Level::setBackground(Sprite background)
-{
+/*
+Name: set background
+Purpose: sets the level background
+Parameters: sprite background
+Returns: nothing
+*/
+void Level::setBackground(Sprite background) {
 	this->background = background;
 }
 
-void Level::setScore(int score)
-{
+/*
+Name: set score
+Purpose: sets the level's current score
+Parameters: the score from the previous level
+Returns: nothing
+*/
+void Level::setScore(int score) {
 	this->score = score;
 }
 
-int Level::getScore()
-{
+/*
+Name: get score
+Purpose: get the score from that level
+Parameters: nothing
+Returns: the score
+*/
+int Level::getScore() {
 	return score;
 }
 
-void Level::setUI(UI ui)
-{
+/*
+Name: set UI
+Purpose: sets the data from the UI into the level
+Parameters: the UI
+Returns: nothing
+*/
+void Level::setUI(UI ui) {
 	this->gameUI = ui;
 }
 
-Slav Level::getPlayer()
-{
+/*
+Name: get player
+Purpose: returns the player data from the level
+Parameters: nothing
+Returns: the player
+*/
+Slav Level::getPlayer() {
 	return player;
 }
 
-void Level::setPlayer(Slav s)
-{
+/*
+Name: set player
+Purpose: initializes the player in the level
+Parameters: the player
+Returns: nothing
+*/
+void Level::setPlayer(Slav s) {
 	player = s;
 }
 
-Bottles Level::getPlayerWeapon()
-{
+/*
+Name: get player weapon
+Purpose: to return the weapon
+Parameters: nothing
+Returns: the bottle
+*/
+Bottles Level::getPlayerWeapon() {
 	return playerWeapon;
 }
 
-void Level::setPlayerWeapon(Bottles b)
-{
+/*
+Name: set player weapon
+Purpose: to initialize the bottle in the level
+Parameters: the bottle
+Returns: nothing
+*/
+void Level::setPlayerWeapon(Bottles b) {
 	playerWeapon = b;
 }
 
-WesternSpies Level::getEnemies()
-{
+/*
+Name: get enemies
+Purpose: get the enemies from the level
+Parameters: nothing
+Returns: the spies
+*/
+WesternSpies Level::getEnemies() {
 	return enemies;
 }
 
-MooCows Level::getEnemyWeapon()
-{
+/*
+Name: get enemy weapon
+Purpose: get the enemy weapon from the level
+Parameters: nothing
+Returns: the spies' weapons
+*/
+MooCows Level::getEnemyWeapon() {
 	return enemyWeapon;
 }
 
-void Level::setEnemyWeapon(MooCows m)
-{
-	enemyWeapon = m;
-}
-
-int Level::getEnemyFrames()
-{
+/*
+Name: get enemy frames
+Purpose: get the enemy frames until fire from the level
+Parameters: nothing
+Returns: the spies' frames
+*/
+int Level::getEnemyFrames() {
 	return enemyFrames;
 }
 
+/*
+Name: set enemy weapon
+Purpose: set the enemy weapon for the level
+Parameters: the spies' weapons
+Returns: nothing
+*/
+void Level::setEnemyWeapon(MooCows m) {
+	enemyWeapon = m;
+}
+
+/*
+Name: play level
+Purpose: play the current level
+Parameters: a lot of stuff
+Returns: if level is complete
+*/
 bool Level::playLevel(RenderWindow &win, bool canFire, int frames, 
 	bool &paused, bool &onMenu, bool &levelStart, bool &fail)
 {

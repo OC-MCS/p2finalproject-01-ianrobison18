@@ -12,10 +12,9 @@ using namespace sf;
 class WesternSpies
 {
 private:
-	list<WesternSpy> spies;
-	int numSpies,
-		framesTilFire;
-	float movementSpeed;
+	list<WesternSpy> spies; // list of spies
+	int numSpies, // current number of spies
+		framesTilFire; // how many frames for them to fire
 public:
 	WesternSpies();
 	WesternSpies(Texture &spyTexture);
